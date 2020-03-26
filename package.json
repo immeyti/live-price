@@ -1,0 +1,20 @@
+{
+  "name": "live-price",
+  "version": "1.0.0",
+  "description": "Get live price from binance and convert to rial",
+  "main": "binance-cline.js",
+  "scripts": {
+    "start": "node_modules/.bin/nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "binance-api-node": "^0.9.17",
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
+    "nodemon": "^2.0.2",
+    "redis": "^2.8.0",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
+  }
+}
