@@ -72,9 +72,9 @@ client.ws.allTickers(tickers => {
         });
     })
 
-    redisClient.get('EOSUSDT', (err, res) => {
-        console.log(JSON.parse(res).lastPrice)
-    })
+    // redisClient.get('EOSUSDT', (err, res) => {
+    //     console.log(JSON.parse(res).lastPrice)
+    // })
 })
 
 

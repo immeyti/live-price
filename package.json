@@ -4,7 +4,8 @@
   "description": "Get live price from binance and convert to rial",
   "main": "binance-cline.js",
   "scripts": {
-    "start": "node_modules/.bin/nodemon app.js"
+    "start": "node_modules/.bin/nodemon app.js",
+    "server": "node_modules/.bin/nodemon server.js"
   },
   "author": "",
   "license": "ISC",
