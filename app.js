@@ -6,7 +6,7 @@ const EventEmitter = require('events');
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
 
-var USDTIRRPrice = 180000;
+var USDTIRRPrice = 170000;
 var BTCUSDTPrice;
 var ETHUSDTPrice;
 
@@ -23,7 +23,7 @@ client.dailyStats()
             redisClient.set(currency.symbol, JSON.stringify(currency));
 
             if (currency.symbol === 'BTCUSDT' || currency.symbol === 'ETHUSDT') {
-                myEmitter.emit('updateConstPrice', currency.symbol, currency.prevClosePrice);
+                myEmitter.emit('updateConstPrice', currency.symbol, currency.lastPrice);
             }
         });
 
@@ -39,8 +39,7 @@ client.dailyStats()
                         //make rial market
                         var rialMarket = _.clone(currency);
                         rialMarket.symbol = makeRialSymbol(currency.symbol);
-                        rialMarket.prevClosePriceRial = convertToRial(currency, 'prevClosePrice') 
-                        console.log(rialMarket);               
+                        rialMarket.lastPrice = convertToRial(currency, 'lastPrice')           
         
                         //save to redis with rial symbol
                         redisClient.set(rialMarket.symbol, JSON.stringify(rialMarket));
@@ -50,6 +49,34 @@ client.dailyStats()
             })
         })
     });
+
+client.ws.allTickers(tickers => {
+    _.forEach(tickers, ticker => { 
+        redisClient.get(ticker.symbol, (err, res) => {
+            oldObj = JSON.parse(res);
+            oldObj.lastPrice = ticker.curDayClose;
+            oldObj.priceChange = ticker.priceChange;
+            oldObj.priceChangePercent = ticker.priceChangePercent;
+            redisClient.set(oldObj.symbol, JSON.stringify(oldObj));
+
+            if (isUSDTMarket(ticker) || isBTCMarket(ticker) || isETHMarket(ticker)) {
+                //make rial market
+                var rialMarket = _.clone(ticker);
+                rialMarket.symbol = makeRialSymbol(ticker.symbol);
+                rialMarket.lastPrice = convertToRial(ticker, 'curDayClose');
+                rialMarket.priceChange = convertToRial(ticker, 'priceChange');           
+
+                //save to redis with rial symbol
+                redisClient.set(rialMarket.symbol, JSON.stringify(rialMarket));
+            }
+        });
+    })
+
+    redisClient.get('EOSUSDT', (err, res) => {
+        console.log(JSON.parse(res).lastPrice)
+    })
+})
+
 
 
 function convertToRial(obj, key) {
