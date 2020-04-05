@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 8080 })
+const wss = new WebSocket.Server({ port: 8380 })
 const redis = require('redis');
 const redisClient = redis.createClient();
 const _ = require('lodash');
@@ -26,7 +26,7 @@ setInterval(function () {
                 data.push(currency);
             })
             
-            //console.log(data);
+            console.log('server is runnign');
             emitter.emit('data-updated', JSON.stringify(data));
         });
     });
