@@ -53,6 +53,11 @@ client.dailyStats()
 client.ws.allTickers(tickers => {
     _.forEach(tickers, ticker => { 
         redisClient.get(ticker.symbol, (err, res) => {
+
+            if (ticker.symbol === 'BTCUSDT' || ticker.symbol === 'ETHUSDT') {
+                myEmitter.emit('updateConstPrice', ticker.symbol, ticker.lastPrice);
+            }
+
             oldObj = JSON.parse(res);
             oldObj.lastPrice = ticker.curDayClose;
             oldObj.priceChange = ticker.priceChange;
@@ -126,8 +131,10 @@ function getSymbol(market) {
 function makeRialSymbol(symbol) {
     if (isUSDTMarket(symbol)) {
         pattern = 'USDT'
-    }else {
+    }else if (isBTCMarket(symbol)) {
         pattern = 'BTC'
+    }else if (isETHMarket(symbol)) {
+        pattern = 'ETH'
     }
 
     return _.replace(symbol, pattern, 'IRR')

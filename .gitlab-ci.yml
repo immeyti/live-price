@@ -1,0 +1,44 @@
+dev-test:
+  only:
+    - dev
+  tags:
+    - frontend-01
+  stage: test
+  script:
+    - cd /var/www/frontend
+dev-deploy:
+  only:
+    - dev
+  tags:
+    - frontend-01
+  stage: deploy
+  script:
+    - cd /var/www/live-price
+    - git reset --hard
+    - git pull origin dev
+    - npm install
+    - pm2 start --name "live-price-client" npm -- run start -- 
+    - pm2 start --name "live-price-server" npm -- run server -- 
+    - sudo chown -R webapp:webapp /var/www/live-price/*
+dev-test:
+  only:
+    - dev
+  tags:
+    - frontend-02
+  stage: test
+  script:
+    - cd /var/www/frontend
+dev-deploy:
+  only:
+    - dev
+  tags:
+    - frontend-02
+  stage: deploy
+  script:
+    - cd /var/www/live-price
+    - git reset --hard
+    - git pull origin dev
+    - npm install
+    - pm2 start --name "live-price-client" npm -- run start -- 
+    - pm2 start --name "live-price-server" npm -- run server -- 
+    - sudo chown -R webapp:webapp /var/www/live-price/*

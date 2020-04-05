@@ -26,7 +26,7 @@ setInterval(function () {
                 data.push(currency);
             })
             
-            //console.log(data);
+            console.log('server is runnign');
             emitter.emit('data-updated', JSON.stringify(data));
         });
     });
