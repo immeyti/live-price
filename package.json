@@ -11,7 +11,7 @@
   "dependencies": {
     "binance-api-node": "^0.9.17",
     "express": "^4.17.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "nodemon": "^2.0.2",
     "redis": "^2.8.0",
     "socket.io": "^2.3.0",
